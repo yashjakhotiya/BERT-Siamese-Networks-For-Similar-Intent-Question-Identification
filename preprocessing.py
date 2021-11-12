@@ -7,15 +7,16 @@ Original file is located at
     https://colab.research.google.com/drive/1uEJqrAAb8WAizXRs7NQUNd1CJS-e9uk8
 """
 
-#from google.colab import drive
-#drive.mount('/content/drive')
+# from google.colab import drive
+# drive.mount('/content/drive')
 
 import pandas as pd
 import numpy as np
 import os
 from tqdm import tqdm
-
 from textblob import TextBlob
+import string
+import pickle
 import nltk
 nltk.download('punkt')
 from nltk.stem.porter import PorterStemmer
@@ -25,42 +26,25 @@ nltk.download('stopwords')
 nltk.download('wordnet') 
 nltk.download('averaged_perceptron_tagger')
 
-#!unzip /content/drive/MyDrive/gatech/quora-question-pairs.zip
+import paths as P
 
-#!unzip /content/train.csv.zip
+# !unzip /content/drive/MyDrive/gatech/quora-question-pairs.zip
+# !unzip /content/train.csv.zip
+# os.listdir()
+# pwd
 
+df = pd.read_csv(P.train_path)
+# df
+test_df = pd.read_csv(P.test_path)
+# test_df
 
-
-
-
-
-
-os.listdir()
-
-pwd
-
-df =pd.read_csv("~/quora-question-pairs/train.csv")
-
-df
-
-test_df = pd.read_csv("~/quora-question-pairs/test.csv")
-
-test_df
-
-pwd
-
-#!wget http://nlp.stanford.edu/data/glove.6B.zip
-#!unzip -q glove.6B.zip
-
-path_to_glove_file = "~/glove.6B.100d.txt"
 
 embeddings_index = {}
-with open(path_to_glove_file) as f:
+with open(P.glove_path) as f:
     for line in f:
         word, coefs = line.split(maxsplit=1)
         coefs = np.fromstring(coefs, "f", sep=" ")
         embeddings_index[word] = coefs
-
 print("Found %s word vectors." % len(embeddings_index))
 
 countr = 0
@@ -74,12 +58,9 @@ print(df.at[0, 'question1'])
 x = nltk.word_tokenize(df.at[0, 'question1'])
 print(x)
 
-
-
 def remove_punctuation(text):
     punctuationfree="".join([i for i in text if i not in string.punctuation])
     return punctuationfree
-
 
 def toLower(text) :
     text = text.lower()
@@ -110,7 +91,6 @@ def lemmatizer(tagged_text):
 def tokenizeText(text):
     return nltk.word_tokenize(text)
 
-
 def pos_tag_helper(nltk_tag):
     if nltk_tag.startswith('J'):
         return wordnet.ADJ
@@ -128,10 +108,6 @@ def pos_tagger(text):
   pos_tagged = list(map(lambda x: (x[0], pos_tag_helper(x[1])), pos_tagged))
   return pos_tagged
 
-df
-
-import string
-
 def preprocess(text):
     # print("Sentence ", text)
     text = remove_punctuation(text)
@@ -145,39 +121,29 @@ def preprocess(text):
     # print("After preprocess ", text_arr)
     return text_arr
 
-df = pd.read_csv("~/train.csv")
-print(df.shape)
-df.dropna(inplace = True)
-print(df.shape)
+# df = pd.read_csv("/content/train.csv")
+# print(df.shape)
+# df.dropna(inplace = True)
+# print(df.shape)
 
-df["question1_arr"] = ""
-df["question2_arr"] = ""
+# df["question1_arr"] = ""
+# df["question2_arr"] = ""
 
-df
+# for index, row in tqdm(df.iterrows(), total=df.shape[0]):
+#     sentence1 = row['question1']
+#     sentence2 = row['question2']
+#     sentence1_arr = preprocess(sentence1)
+#     sentence2_arr = preprocess(sentence2)
+#     df.at[index, "question1_arr"] = sentence1_arr
+#     df.at[index, "question2_arr"] = sentence2_arr
+#     # break
 
-for index, row in tqdm(df.iterrows(), total=df.shape[0]):
-    sentence1 = row['question1']
-    sentence2 = row['question2']
-
-    sentence1_arr = preprocess(sentence1)
-    sentence2_arr = preprocess(sentence2)
-
-    df.at[index, "question1_arr"] = sentence1_arr
-    df.at[index, "question2_arr"] = sentence2_arr
-    # break
-
-
-
-x = np.array([])
-
-x.shape
-
-x
+# x = np.array([])
+# x.shape
+# x
 
 unk_words = []
-
 def embedding_func(text_arr):
-
     countr = 0
     unk_exist_countr = 0
     embed_arr = []
@@ -185,102 +151,75 @@ def embedding_func(text_arr):
       if(i in embeddings_index):
           if(i == "unk"):
               unk_exist_countr+= 1
-
           embed_arr.append(embeddings_index[i])
       else:
           # print("Unknown word ", i)
           unk_words.append(i)
           countr += 1
           embed_arr.append(embeddings_index["unk"])
-    
     embed_arr = np.array(embed_arr)
-
-
     return embed_arr, countr, unk_exist_countr
 
 unknown_words_count = 0
 unk_exist_countr_ = 0
-
 total_words = 0
 
-question1_numpy = []
-question2_numpy = []
-for index, row in tqdm(df.iterrows(), total=df.shape[0]):
-    sentence1_arr = row['question1_arr']
-    sentence2_arr = row['question2_arr']
+# question1_numpy = []
+# question2_numpy = []
+# for index, row in tqdm(df.iterrows(), total=df.shape[0]):
+#     sentence1_arr = row['question1_arr']
+#     sentence2_arr = row['question2_arr']
+#     total_words += len(sentence1_arr) + len(sentence2_arr)
+#     sentence1_embed, countr_, unk_exist_countr = embedding_func(sentence1_arr)
+#     question1_numpy.append(sentence1_embed)
+#     unknown_words_count = unknown_words_count + countr_
+#     unk_exist_countr_ = unk_exist_countr_ + unk_exist_countr
+#     sentence2_embed, countr_, unk_exist_countr = embedding_func(sentence2_arr)
+#     question2_numpy.append(sentence2_embed)
+#     unknown_words_count = unknown_words_count + countr_
+#     unk_exist_countr_ = unk_exist_countr_ + unk_exist_countr
+#     # print("outp shape ", outp.shape)
+#     # break
 
-    total_words += len(sentence1_arr) + len(sentence2_arr)
-    
+# print("Unknown words ", unknown_words_count)
+# print("unk seen from dataset ", unk_exist_countr_)
+# print("Total words ", total_words)
 
-    sentence1_embed, countr_, unk_exist_countr = embedding_func(sentence1_arr)
-    question1_numpy.append(sentence1_embed)
+# print(len(df))
+# print(len(question1_numpy))
+# print(len(question2_numpy))
+# print(question1_numpy[0])
+# print(question2_numpy[0])
 
-    unknown_words_count = unknown_words_count + countr_
-    unk_exist_countr_ = unk_exist_countr_ + unk_exist_countr
+# df['question1_embed'] = question1_numpy
+# df['question2_embed'] = question2_numpy
 
-    sentence2_embed, countr_, unk_exist_countr = embedding_func(sentence2_arr)
-    question2_numpy.append(sentence2_embed)
+# embeddings = []
+# embeddings.append(question1_numpy)
+# embeddings.append(question2_numpy)
+# embeddings.append(list(df['is_duplicate']))
+# len(embeddings[2])
 
-    unknown_words_count = unknown_words_count + countr_
-    unk_exist_countr_ = unk_exist_countr_ + unk_exist_countr
+# with open("embeddings.pkl", 'wb') as f:
+#   pickle.dump(embeddings, f)
 
+# from google.colab import files
+# files.download("embeddings.pkl")
 
-    # print("outp shape ", outp.shape)
-    # break
-
-print("Unknown words ", unknown_words_count)
-print("unk seen from dataset ", unk_exist_countr_)
-print("Total words ", total_words)
-
-113519/4493053
-
-print(len(df))
-print(len(question1_numpy))
-print(len(question2_numpy))
-print(question1_numpy[0])
-print(question2_numpy[0])
-
-df['question1_embed'] = question1_numpy
-df['question2_embed'] = question2_numpy
-
-embeddings = []
-embeddings.append(question1_numpy)
-embeddings.append(question2_numpy)
-embeddings.append(list(df['is_duplicate']))
-
-len(embeddings[2])
-
-"""df.to_csv("Processed_Data.csv")"""
-
-import pickle
-
-with open("embeddings.pkl", 'wb') as f:
-  pickle.dump(embeddings, f)
-
-#from google.colab import files
-#files.download("embeddings.pkl")
-
-(df['question2_embed'] == question2_numpy).any()
-
+# (df['question2_embed'] == question2_numpy).any()
 # question1_numpy = np.array(question1_numpy)
 # question2_numpy = np.array(question2_numpy)
 # print(question1_numpy.shape,question2_numpy.shape)
+# 5690/221832
+# 897613 / 4493053
+# embeddings_index["train"]
+# embeddings_index["training"]
+# df.iloc[105775:105785]
 
-5690/221832
-
-897613 / 4493053
-
-embeddings_index["train"]
-
-embeddings_index["training"]
-
-df.iloc[105775:105785]
-
-for i in x:
-  i = i.lower()
-  if(i in embeddings_index):
-    print("Word is ",i, " ", embeddings_index[i].shape)
-    # print()
-  else:
-    print("Word not present")
-
+# for i in x:
+#   i = i.lower()
+#   if(i in embeddings_index):
+#     print("Word is ",i, " ", embeddings_index[i].shape)
+#     # print()
+#   else:
+#     print("Word not present")
