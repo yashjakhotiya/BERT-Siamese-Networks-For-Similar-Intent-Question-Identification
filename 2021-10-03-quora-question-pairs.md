@@ -29,12 +29,24 @@ or not they are similar.
 
 2. Data preprocessing:
     - One augmentation method we plan to leverage is the transitive property of similarity and create more question pairs. Assuming a question is represented as 𝑄<sub>𝑖</sub>. If 𝑄<sub>1</sub> - 𝑄<sub>2</sub> are similar and 𝑄<sub>2</sub> - 𝑄<sub>3</sub> are similar, then 𝑄<sub>1</sub> - 𝑄<sub>3</sub> will also be similar.
-    - Other preprocessing techniques we intend to use are,
-        1. Noise Removal
-        2. Removing stopwords and punctuation
+    - We used the following preprocessing techniques:
+        -   Sample Sentence: "How can internet speed be increased by hacking through DNS?"
+        1. Removing punctuation
+            - After Punctuation Removal: "How can internet speed be increased by hacking through DNS"
+        2. Converting characters to Lower Case
+            - After conversion: "how can internet speed be increased by hacking through dns"
         3. Tokenization
-        4. Lemmatization and stemming
-
+            - Tokenization is the process of converting the sentence into a list of it's constituent words/phrases. It helps reduce the input to a finite set, making it easier to process.
+            - After Tokenization: ['how', 'can', 'internet', 'speed', 'be', 'increased', 'by', 'hacking', 'through', 'dns']
+        4. Stop Word Removal
+            - The idea of Stop Word Removal is to remove commonly occuring words in the corpus.
+            - After Stop Word Removal: ['internet', 'speed', 'increased', 'hacking', 'dns']
+        5. POS Tagging
+            - POS tagging refers to categorizing words in a corpus in correspondence with a particular part of speech (eg: Noun, Verb, Adjective etc). This process helps improve the performance of the Lematizer.
+            - After POS Tagging: [('internet', 'a'), ('speed', 'n'), ('increased', 'v'), ('hacking', 'v'), ('dns', 'n')]
+        6. Lemmatization
+            - Lematization is grouping together different inflected forms of a word so that they can be analyzed as a single item.
+            - After Lemmatization: ['internet', 'speed', 'increase', 'hack', 'dns']
 
 3. Training:
     - For each training iteration, we input questions in a pairwise fashion - 𝑄<sub>𝑖</sub>, 𝑄<sub>𝑗</sub>.
