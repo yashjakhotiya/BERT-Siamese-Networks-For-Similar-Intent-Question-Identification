@@ -42,6 +42,13 @@ or not they are similar.
     - Next, these representations are concatenated 𝑣<sub>𝑐𝑜𝑛</sub> = 𝑐𝑜𝑛𝑐𝑎𝑡(ν<sub>𝑖</sub>, ν<sub>𝑗</sub>), and passed on to a feedforward neural network or a machine learning model 𝐹 (𝑣𝑐𝑜𝑛) that predicts whether two questions are similar or not.
     - ∀ questions 𝑄<sub>𝑖</sub> ε question bank 𝑄<sub>𝐵</sub>, we group them into clusters 𝑐<sub>_1_</sub>,...,𝑐<sub>_n_</sub> for efficient inference.
 
+    **Supervised method: Classifying sentences as similar or not using  BERT-based model**
+    - The tokenized version of the candidate sentence that we get from the preprocessing stage is first passed to a pre-trained BERT model.
+    - The output of this pre-trained BERT model is the sentence-level embedding of the tokenized version - E<sub>1.
+    - The same process is done on the second candidate sentence to retrieve its sentence-level embedding - E<sub>2.
+    - The two embeddings are concatenated, and then passed to a feed-forward neural network which consists of a fully connected layer, a ReLu layer, another fully       connected layer, and finally a softmax layer in the order specified.
+    - The softmax layer then outputs the probabilities of the pair of candidate questions being similar. Based on the probabilities we classify the questions as         similar or not similar.
+    
 
 4. Inference:
     - For a query question 𝑄<sub>𝑞</sub> we identify the cluster 𝑐<sub>𝑖</sub> it belongs to.
