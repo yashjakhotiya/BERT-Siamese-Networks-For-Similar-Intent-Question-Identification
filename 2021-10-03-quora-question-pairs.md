@@ -42,10 +42,10 @@ or not they are similar.
             - The idea of Stop Word Removal is to remove commonly occuring words in the corpus.
             - After Stop Word Removal: ['internet', 'speed', 'increased', 'hacking', 'dns']
         5. POS Tagging
-            - POS tagging refers to categorizing words in a corpus in correspondence with a particular part of speech (eg: Noun, Verb, Adjective etc). This process helps improve the performance of the Lematizer.
+            - POS tagging refers to categorizing words in a corpus corresponding to a particular part of speech (eg: Noun, Verb, Adjective etc). This process helps improve the performance of the Lemmatizer.
             - After POS Tagging: [('internet', 'a'), ('speed', 'n'), ('increased', 'v'), ('hacking', 'v'), ('dns', 'n')]
         6. Lemmatization
-            - Lematization is grouping together different inflected forms of a word so that they can be analyzed as a single item.
+            - Lemmatization is grouping together different inflected forms of a word so that they can be analyzed as a single item.
             - After Lemmatization: ['internet', 'speed', 'increase', 'hack', 'dns']
 
 3. Training:
