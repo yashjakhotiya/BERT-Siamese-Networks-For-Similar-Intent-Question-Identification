@@ -25,6 +25,7 @@ import tqdm
 import pickle
 import pandas as pd
 import numpy as np
+import math
 
 def shuffle_data(input_1, input_2, labels):
     shuffled_input_1 = []
@@ -56,16 +57,17 @@ def train(model, tokenizer, X_1, X_2, Y, learning_rate=0.1, batch_size=8, num_ep
           model.zero_grad()
           log_probs = model.forward(encoded_input_1, encoded_input_2, train=True)
           # print(log_probs)
-          loss = 0
-          for batch_idx in range(labels_onehot.shape[0]):
-              loss_batch = torch.neg(log_probs[batch_idx]).dot(labels_onehot[batch_idx])
-              loss += loss_batch
-          loss /= batch_size
-          loss.backward()
+          loss_batch = 0
+          for idx in range(labels_onehot.shape[0]):
+              loss_iteration = torch.neg(log_probs[idx]).dot(labels_onehot[idx])
+              loss_batch += loss_iteration
+          loss_batch /= labels_onehot.shape[0]
+          loss_batch.backward()
           nn.utils.clip_grad_norm_(model.parameters(), 1.0)
           optimizer.step()
-          total_loss += loss.detach()
-      print(f"avg loss on epoch {epoch} = {total_loss / len(X_1)}")
+          total_loss += loss_batch.detach()
+      num_batches = math.ceil(len(X_1) / batch_size)
+      print(f"avg loss on epoch {epoch} = {total_loss / num_batches}")
 
 def get_predictions(model, X_1, X_2, batch_size=8):
   all_predictions = np.array([])
@@ -102,48 +104,6 @@ def evaluate(Y, predictions):
   print("Recall: {}".format(sklearn.metrics.recall_score(Y, predictions)))
   print("Confusion matrix: \n{}\n".format(sklearn.metrics.confusion_matrix(Y, predictions)))
 
-class SimilarityModelStaticBert(nn.Module):
-    def __init__(self):
-        super(SimilarityModelStaticBert, self).__init__()
-        self.bert = DistilBertModel.from_pretrained("distilbert-base-uncased").cuda()
-        for param in self.bert.parameters():
-            param.requires_grad = False
-        self.feedforward_1 = nn.Linear(768*2, 256).cuda()
-        self.non_lin = nn.PReLU().cuda()
-        self.feedforward_2 = nn.Linear(256, 2).cuda()
-        self.log_softmax = nn.LogSoftmax(dim=0).cuda()
-
-    def forward(self, encoded_input_1, encoded_input_2, train=False):
-        if train:
-          self.train()
-        else:
-          self.eval()
-        pooler_output_1 = self.bert(encoded_input_1['input_ids'].cuda(), encoded_input_1['attention_mask'].cuda()).last_hidden_state[:, 0].cuda()
-        pooler_output_2 = self.bert(encoded_input_2['input_ids'].cuda(), encoded_input_2['attention_mask'].cuda()).last_hidden_state[:, 0].cuda()
-        # print(pooler_output_1)
-        concatenated_output = torch.cat([pooler_output_1, pooler_output_2], axis=1).cuda()
-        return self.log_softmax(self.feedforward_2(self.non_lin(self.feedforward_1(concatenated_output))))
-
-class SimilarityModelFineTuneBert(nn.Module):
-    def __init__(self):
-        super(SimilarityModelFineTuneBert, self).__init__()
-        self.bert = DistilBertModel.from_pretrained("distilbert-base-uncased").cuda()
-        self.feedforward_1 = nn.Linear(768*2, 256).cuda()
-        self.non_lin = nn.PReLU().cuda()
-        self.feedforward_2 = nn.Linear(256, 2).cuda()
-        self.log_softmax = nn.LogSoftmax(dim=0).cuda()
-
-    def forward(self, encoded_input_1, encoded_input_2, train=False):
-        if train:
-          self.train()
-        else:
-          self.eval()
-        pooler_output_1 = self.bert(encoded_input_1['input_ids'].cuda(), encoded_input_1['attention_mask'].cuda()).last_hidden_state[:, 0].cuda()
-        pooler_output_2 = self.bert(encoded_input_2['input_ids'].cuda(), encoded_input_2['attention_mask'].cuda()).last_hidden_state[:, 0].cuda()
-        # print(pooler_output_1)
-        concatenated_output = torch.cat([pooler_output_1, pooler_output_2], axis=1).cuda()
-        return self.log_softmax(self.feedforward_2(self.non_lin(self.feedforward_1(concatenated_output))))
-
 # Raw csv
 # df = pd.read_csv('train.csv')
 # data = [list(df["question1"]), list(df["question2"]), list(df["is_duplicate"])]
@@ -153,12 +113,13 @@ class SimilarityModelFineTuneBert(nn.Module):
 #    data = pickle.load(f)
 
 # Preprocessed w/ transitivity
+# Finalized transitivity based on its superiority
 with open('/content/drive/MyDrive/processed_data_1.pkl', 'rb') as f:
    data = pickle.load(f)
 
 print("Original data has {} question pairs".format(len(data[0])))
 
-size = 10000
+size = 100000
 dataset = [data[i][:size] for i in range(len(data))]
 print("Reduced the dataset to first {} pairs".format(len(dataset[0])))
 
@@ -172,7 +133,6 @@ test_dataset = [[dataset[i][j] for j in test_indices] for i in range(len(dataset
 
 train_input_1 = [" ".join(train_dataset[0][i]) for i in range(len(train_dataset[0]))]
 train_input_2 = [" ".join(train_dataset[1][i]) for i in range(len(train_dataset[1]))]
-# Uncomment following for raw csv
 # train_input_1 = ["".join(train_dataset[0][i]) for i in range(len(train_dataset[0]))]
 # train_input_2 = ["".join(train_dataset[1][i]) for i in range(len(train_dataset[1]))]
 train_Y = train_dataset[2]
@@ -184,6 +144,46 @@ test_input_2 = [" ".join(test_dataset[1][i]) for i in range(len(test_dataset[1])
 test_Y = test_dataset[2]
 print(len(test_input_1), len(test_input_2), len(test_Y))
 num_classes = 2
+
+class SimilarityModelFineTuneBert(nn.Module):
+    def __init__(self):
+        super(SimilarityModelFineTuneBert, self).__init__()
+        self.bert = DistilBertModel.from_pretrained("distilbert-base-uncased").cuda()
+        self.feedforward_1 = nn.Linear(768*2, 300).cuda()
+        self.non_lin_1 = nn.PReLU().cuda()
+        self.dropout = nn.Dropout(p=0.5)
+        self.feedforward_2 = nn.Linear(300, 300).cuda()
+        self.non_lin_2 = nn.PReLU().cuda()
+        self.feedforward_3 = nn.Linear(300, 2).cuda()
+        self.log_softmax = nn.LogSoftmax(dim=0).cuda()
+
+    def forward(self, encoded_input_1, encoded_input_2, train=False):
+        if train:
+          self.train()
+        else:
+          self.eval()
+        pooler_output_1 = self.bert(encoded_input_1['input_ids'].cuda(), encoded_input_1['attention_mask'].cuda()).last_hidden_state[:, 0].cuda()
+        pooler_output_2 = self.bert(encoded_input_2['input_ids'].cuda(), encoded_input_2['attention_mask'].cuda()).last_hidden_state[:, 0].cuda()
+        # print(pooler_output_1)
+        concatenated_output = torch.cat([pooler_output_1, pooler_output_2], axis=1).cuda()
+        f1 = self.dropout(self.non_lin_1(self.feedforward_1(concatenated_output)))
+        f2 = self.dropout(self.non_lin_2(self.feedforward_2(f1)))
+        return self.log_softmax(self.feedforward_3(f2))
+
+tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
+print("Training fine tune model")
+fine_tune_model = SimilarityModelFineTuneBert()
+train(fine_tune_model, tokenizer, train_input_1, train_input_2, train_Y, learning_rate=0.0001, num_epochs=5, batch_size=128)
+
+print("Evaluating fine tune model on train dataset")
+predictions = get_predictions(fine_tune_model, train_input_1, train_input_2, batch_size=128)
+evaluate(train_Y, predictions)
+
+print("Evaluating fine tune bert model on test dataset")
+predictions = get_predictions(fine_tune_model, test_input_1, test_input_2, batch_size=128)
+evaluate(test_Y, predictions)
+
+# Stopped working on this after evaluating a baseline
 
 tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
 vanilla = DistilBertModel.from_pretrained("distilbert-base-uncased").cuda()
@@ -197,28 +197,44 @@ print("NOTE: For vanilla model with cosine based similarity, train-test split do
 predictions = get_predictions_cosine_similarity(vanilla, tokenizer, test_input_1, test_input_2, 0.96)
 evaluate(test_Y, predictions)
 
+#Stopped training this after superiority of finetuning BERT was realized
+
+class SimilarityModelStaticBert(nn.Module):
+    def __init__(self):
+        super(SimilarityModelStaticBert, self).__init__()
+        self.bert = DistilBertModel.from_pretrained("distilbert-base-uncased").cuda()
+        for param in self.bert.parameters():
+            param.requires_grad = False
+        self.feedforward_1 = nn.Linear(768*2, 300).cuda()
+        self.non_lin_1 = nn.PReLU().cuda()
+        self.feedforward_2 = nn.Linear(300, 300).cuda()
+        self.non_lin_2 = nn.PReLU().cuda()
+        self.feedforward_3 = nn.Linear(300, 2).cuda()
+        self.log_softmax = nn.LogSoftmax(dim=0).cuda()
+
+    def forward(self, encoded_input_1, encoded_input_2, train=False):
+        if train:
+          self.train()
+        else:
+          self.eval()
+        pooler_output_1 = self.bert(encoded_input_1['input_ids'].cuda(), encoded_input_1['attention_mask'].cuda()).last_hidden_state[:, 0].cuda()
+        pooler_output_2 = self.bert(encoded_input_2['input_ids'].cuda(), encoded_input_2['attention_mask'].cuda()).last_hidden_state[:, 0].cuda()
+        # print(pooler_output_1)
+        concatenated_output = torch.cat([pooler_output_1, pooler_output_2], axis=1).cuda()
+        f1 = self.non_lin_1(self.feedforward_1(concatenated_output))
+        f2 = self.non_lin_2(self.feedforward_2(f1))
+        return self.log_softmax(self.feedforward_3(f2))
+
+
 tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
 print("Training static bert model")
 static_bert_model = SimilarityModelStaticBert()
-train(static_bert_model, tokenizer, train_input_1, train_input_2, train_Y, learning_rate=0.001, num_epochs=10)
+train(static_bert_model, tokenizer, train_input_1, train_input_2, train_Y, learning_rate=0.0001, num_epochs=10, batch_size=32)
 
 print("Evaluating static bert model on train dataset")
-predictions = get_predictions(static_bert_model, train_input_1, train_input_2)
+predictions = get_predictions(static_bert_model, train_input_1, train_input_2, batch_size=32)
 evaluate(train_Y, predictions)
 
 print("Evaluating static bert model on test dataset")
-predictions = get_predictions(static_bert_model, test_input_1, test_input_2)
-evaluate(test_Y, predictions)
-
-tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
-print("Training fine tune model")
-fine_tune_model = SimilarityModelFineTuneBert()
-train(fine_tune_model, tokenizer, train_input_1, train_input_2, train_Y, learning_rate=0.001, num_epochs=10)
-
-print("Evaluating fine tune model on train dataset")
-predictions = get_predictions(fine_tune_model, train_input_1, train_input_2)
-evaluate(train_Y, predictions)
-
-print("Evaluating fine tune bert model on test dataset")
-predictions = get_predictions(fine_tune_model, test_input_1, test_input_2)
+predictions = get_predictions(static_bert_model, test_input_1, test_input_2, batch_size=32)
 evaluate(test_Y, predictions)
