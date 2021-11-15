@@ -136,16 +136,24 @@ Through the second set of experiments, we tried to gain insight on which model w
 
 **Inference** : As it can be seen in the table, the Fine-tuned BERT model produces the best accuracy results on the data as compared to vanilla and Static-BERT. This again empirically backs our decision to choose a pre-trained BERT model and fine-tune it on our dataset. 
 
-**Experiment 3 : Hyperparameter tuning**
+**Experiment 3 : Final model**
     
-Once we chose the model as the Fine-tuned BERT model based on the results from experiment 2, we did some hyperparamter tuning to 
+Once we chose the model as the Fine-tuned BERT model based on the results from experiment 2, we did some hyperparamter tuning to pick the best combination of hyperparameters for performance. We found that a batch size of 128 and a training over 5 epochs gave the best results for our Fine-tuned BERT model. For this experiment we used 100,000 data points from the original dataset. The results for this experiment are shown below:
 
+| Data Preprocessing  | Data Augmentation  | Model | Train accuracy | Train F1 score | Test accuracy | Test F1 score |
+|---|---|---|---|---|---|---|
+| Yes  |  Yes |  Fine-tuned BERT |  0.97  | 0.96  | 0.76  | 0.69  |
 
+We also tried adding a dropout layer to observe if any significant overfitting was occurring. However, this did not result in any change in the results. Thus, we can conclude that our model does not overfit. 
+
+**Future experiments:**    
+    
+Experiment 3 was the final set of experiments done for the supervised part of our project for the midpoint report.
 We also hope to gain insight by clustering similar questions and
 analyze the reason for their similarity, which may help in
 downstream tasks such as automatic question tagging, and
 personalized recommendation of questions basedon the field of
-interest.
+interest. This will be the unsupervised portion of our project.
 
 # Proposed Timeline and Responsibilities :
 ![](https://yashjakhotiya.github.io/blog/images/2021-10-03-quora-question-pairs/timeline.png "Timeline") 
