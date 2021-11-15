@@ -124,7 +124,7 @@ Through the first set of experiments, we try to observe the effects of data prep
     
 Here, the baseline model is nothing but the pre-trained BERT-based model, and the embeddings of the sentences obtained from this model are compared using a cosine similarity. This provided us a good baseline result and starting point, which we tried to improve upon.
 
-For the other two models, the dataset was then split into training and testing data with a ratio of 80:20 respectively. The models were trained over this data for 5 epochs with a learning rate of 0.0001 and batch size of 8. The architecture used for these models in this experiment : ***BERT -> FFN -> Sigmoid layer -> FFN -> Softmax layer***. In the Static BERT model we do not train the FFN layers, and in the Fine-tuned BERT, all the layers are trained and the pre-trained BERT-based model is fine-tuned on our dataset.
+For the other two models, the dataset was then split into training and testing data with a ratio of 80:20 respectively. The models were trained over this data for 5 epochs with a learning rate of 0.0001 and batch size of 8. The architecture used for these models in this experiment : ***BERT -> FFN -> Sigmoid layer -> FFN -> Softmax layer***. In the Static BERT model the pre-trained BERT model is kept static and the remaining layers are trained, whereas in the Fine-tuned BERT, all the layers are trained and the pre-trained BERT-based model is fine-tuned on our dataset.
 
 **Inference** : As we can see from the table, applying data preprocessing techniques (mentioned in section 2) and data augmentation techniques increases the accuracy on the test data. This empirically backs our decision to do data preprocessing and augmentation.
 
