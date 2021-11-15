@@ -54,7 +54,7 @@ or not they are similar.
     - Next, these representations are concatenated 𝑣<sub>𝑐𝑜𝑛</sub> = 𝑐𝑜𝑛𝑐𝑎𝑡(ν<sub>𝑖</sub>, ν<sub>𝑗</sub>), and passed on to a feedforward neural network or a machine learning model 𝐹 (𝑣𝑐𝑜𝑛) that predicts whether two questions are similar or not.
     - ∀ questions 𝑄<sub>𝑖</sub> ε question bank 𝑄<sub>𝐵</sub>, we group them into clusters 𝑐<sub>_1_</sub>,...,𝑐<sub>_n_</sub> for efficient inference.
 
-    **Supervised method: Classifying sentences as similar or not using  BERT-based model**
+    **Supervised method: Classifying sentences as similar or not using  BERT-based model (Added for midpoint report)**
     - The tokenized version of the candidate sentence that we get from the preprocessing stage is first passed to a pre-trained BERT model.
     - The output of this pre-trained BERT model is the sentence-level embedding of the tokenized version - E<sub>1.
     - The same process is done on the second candidate sentence to retrieve its sentence-level embedding - E<sub>2.
@@ -95,7 +95,7 @@ relevant questions.
 
 For this checkpoint, we completed the supervised aspect of our project and implemented a BERT-based model to classify pairs of questions as "similar" or "not similar". We conducted thorough experiments and ablation studies to find the optimal model, hyperparameters and data preprocessing techniques that gives us the best results. 
  
-**Experiment 1**
+**Experiment 1 : Data preprocessing and augmentation choices**
     
 Through the first set of experiments, we try to observe the effects of data preprocessing and data augmentation on the performance of the model. We also apply three different types of models on a sample dataset of 1000 data points from the entire original dataset. The results of these are seen in the tables below:
 
@@ -120,9 +120,26 @@ Through the first set of experiments, we try to observe the effects of data prep
     
 Here, the baseline model is nothing but the pre-trained BERT-based model, and the embeddings of the sentences obtained from this model are compared using a cosine similarity. This provided us a good baseline result and starting point, which we tried to improve upon.
 
-For the other two models, the dataset was then split into training and testing data with a ratio of 80:20 respectively. The models were trained over this data for 5 epochs with a learning rate of 0.0001 and batch size of 8. The architecture used for this experiment : ***BERT -> FFN -> Sigmoid layer -> FFN -> Softmax layer***. In the Static BERT model we do not train the FFN layers, and in the Fine-tuned BERT, all the layers are trained and the pre-trained BERT-based model is fine-tuned on our dataset.
+For the other two models, the dataset was then split into training and testing data with a ratio of 80:20 respectively. The models were trained over this data for 5 epochs with a learning rate of 0.0001 and batch size of 8. The architecture used for these models in this experiment : ***BERT -> FFN -> Sigmoid layer -> FFN -> Softmax layer***. In the Static BERT model we do not train the FFN layers, and in the Fine-tuned BERT, all the layers are trained and the pre-trained BERT-based model is fine-tuned on our dataset.
 
-Inference : As we can see from the table, applying data preprocessing techniques (mentioned in section 2) and data augmentation techniques increases the accuracy on the test data. This empirically backs our decision to do data preprocessing and augmentation.
+**Inference** : As we can see from the table, applying data preprocessing techniques (mentioned in section 2) and data augmentation techniques increases the accuracy on the test data. This empirically backs our decision to do data preprocessing and augmentation.
+
+**Experiment 2 : Model selection**
+
+Through the second set of experiments, we tried to gain insight on which model would work best for our problem. As a part of this, we ran our baseline, Static BERT, and Fine-tuned BERT on a sample dataset of 10000 datapoints randomly chosen from the original dataset. For the Static BERT and Fine-tuned BERT models we again split the data into train and test with a 80:20 ratio, and ran them for 10 epochs with a learning rate of 0.0001 and batch size 32. The architecture used for these 2 models in this experiment : ***BERT -> FFN -> PRelu -> FFN -> PRelu -> FFN -> Softmax Layer***. The results are seen in the table below:
+
+| Data Preprocessing  | Data Augmentation  | Model | Train accuracy | Train F1 score | Test accuracy | Test F1 score |
+|---|---|---|---|---|---|---|
+| Yes  |  Yes |  Vanilla |  0.59  | 0.6  | 0.6  | 0.61  |
+| Yes  | Yes  | Static BERT | 0.7  |0.63  | 0.68  | 0.61 |
+| Yes  | Yes  | Fine-tuned BERT| 0.99  |  0.98 |  0.71 |  0.62 |
+
+**Inference** : As it can be seen in the table, the Fine-tuned BERT model produces the best accuracy results on the data as compared to vanilla and Static-BERT. This again empirically backs our decision to choose a pre-trained BERT model and fine-tune it on our dataset. 
+
+**Experiment 3 : Hyperparameter tuning**
+    
+Once we chose the model as the Fine-tuned BERT model based on the results from experiment 2, we did some hyperparamter tuning to 
+
 
 We also hope to gain insight by clustering similar questions and
 analyze the reason for their similarity, which may help in
