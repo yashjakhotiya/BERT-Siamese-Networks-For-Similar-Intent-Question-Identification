@@ -93,7 +93,7 @@ relevant questions.
 
 # Midpoint results and analysis
 
-For this checkpoint, we completed the supervised aspect of our project and implemented a BERT-based model to classify pairs of questions as "similar" or "not similar". We conducted thorough experiments and ablation studies to find the optimal model that gives us the best results. 
+For this checkpoint, we completed the supervised aspect of our project and implemented a BERT-based model to classify pairs of questions as "similar" or "not similar". We conducted thorough experiments and ablation studies to find the optimal model, hyperparameters and data preprocessing techniques that gives us the best results. 
  
 **Experiment 1**
     
@@ -104,15 +104,25 @@ Through the first set of experiments, we try to observe the effects of data prep
 | No  |  No |  Baseline | 0.57  | 0.61  | 0.42  | 0.58  |
 | Yes  | No  | Baseline | 0.61  | 0.61  | 0.57  | 0.62 |
 | Yes  | Yes  | Baseline| 0.6  |  0.62 |  0.61 |  0.6 |
+
+
+| Data Preprocessing  | Data Augmentation  | Model | Train accuracy | Train F1 score | Test accuracy | Test F1 score |
+|---|---|---|---|---|---|---|
+| No  |  No |  Static BERT |  0.66  | 0.61  | 0.57  | 0.53  |
+| Yes  | No  | Static BERT | 0.67  |0.62  | 0.59  | 0.57 |
+| Yes  | Yes  | Static BERT| 0.66  |  0.62 |  0.59 |  0.55 |
+    
+| Data Preprocessing  | Data Augmentation  | Model | Train accuracy | Train F1 score | Test accuracy | Test F1 score |
+|---|---|---|---|---|---|---|
+| No  |  No |  Fine-tuned BERT |  0.98  | 0.97  | 0.57  | 0.41  |
+| Yes  | No  | Fine-tuned BERT | 0.97  |0.97  | 0.58  | 0.5 |
+| Yes  | Yes  | Fine-tuned BERT| 0.97  |  0.96 |  0.64 |  0.52 |
     
 Here, the baseline model is nothing but the pre-trained BERT-based model, and the embeddings of the sentences obtained from this model are compared using a cosine similarity. This provided us a good baseline result and starting point, which we tried to improve upon.
-    
 
-For the first experiment a sample dataset of 1000 data points was chosen out of the entire original dataset. This dataset was then split into training and testing data with a ratio of 80:20 respectively. The model was trained over this data for 5 epochs with a learning rate of 0.0001 and batch size of 8. The model used for this experiment : ***BERT -> FFN -> Sigmoid layer -> FFN -> Softmax layer***. With this experimental setup a few ablation studies were conducted, which are mentioned in the table below:
+For the other two models, the dataset was then split into training and testing data with a ratio of 80:20 respectively. The models were trained over this data for 5 epochs with a learning rate of 0.0001 and batch size of 8. The architecture used for this experiment : ***BERT -> FFN -> Sigmoid layer -> FFN -> Softmax layer***. In the Static BERT model we do not train the FFN layers, and in the Fine-tuned BERT, all the layers are trained and the pre-trained BERT-based model is fine-tuned on our dataset.
 
-
-
-    
+Inference : As we can see from the table, applying data preprocessing techniques (mentioned in section 2) and data augmentation techniques increases the accuracy on the test data. This empirically backs our decision to do data preprocessing and augmentation.
 
 We also hope to gain insight by clustering similar questions and
 analyze the reason for their similarity, which may help in
