@@ -79,7 +79,7 @@ or not they are similar.
         - DBSCAN
         - GMM
     - Potential models for finding similarity
-        - Feedforward neural network
+        - Feedforward neural network (FFN)
         - Gradient boosted trees
 
 ![](https://yashjakhotiya.github.io/blog//images/2021-10-03-quora-question-pairs/similar-questions-flow-chart.png "Model in action") 
@@ -90,6 +90,29 @@ or not they are similar.
 We aim to confidently identify a representative question for a
 query question input by a user, and further list the **_top-k_** most
 relevant questions.
+
+# Midpoint results and analysis
+
+For this checkpoint, we completed the supervised aspect of our project and implemented a BERT-based model to classify pairs of questions as "similar" or "not similar". We conducted thorough experiments and ablation studies to find the optimal model that gives us the best results. 
+ 
+**Experiment 1**
+    
+Through the first set of experiments, we try to observe the effects of data preprocessing and data augmentation on the performance of the model. We also apply three different types of models on a sample dataset of 1000 data points from the entire original dataset. The results of these are seen in the tables below:
+
+| Data Preprocessing  | Data Augmentation  | Model | Train accuracy | Train F1 score | Test accuracy | Test F1 score |
+|---|---|---|---|---|---|---|
+| No  |  No |  Baseline | 0.57  | 0.61  | 0.42  | 0.58  |
+| Yes  | No  | Baseline | 0.61  | 0.61  | 0.57  | 0.62 |
+| Yes  | Yes  | Baseline| 0.6  |  0.62 |  0.61 |  0.6 |
+    
+Here, the baseline model is nothing but the pre-trained BERT-based model, and the embeddings of the sentences obtained from this model are compared using a cosine similarity. This provided us a good baseline result and starting point, which we tried to improve upon.
+    
+
+For the first experiment a sample dataset of 1000 data points was chosen out of the entire original dataset. This dataset was then split into training and testing data with a ratio of 80:20 respectively. The model was trained over this data for 5 epochs with a learning rate of 0.0001 and batch size of 8. The model used for this experiment : ***BERT -> FFN -> Sigmoid layer -> FFN -> Softmax layer***. With this experimental setup a few ablation studies were conducted, which are mentioned in the table below:
+
+
+
+    
 
 We also hope to gain insight by clustering similar questions and
 analyze the reason for their similarity, which may help in
