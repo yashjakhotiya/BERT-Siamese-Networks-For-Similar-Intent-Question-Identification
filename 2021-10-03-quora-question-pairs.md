@@ -63,7 +63,7 @@ or not they are similar.
     
     ![image](https://user-images.githubusercontent.com/39705529/141838152-b27025fc-becc-47b6-a20f-f6c7bb41e548.png)
     
-                                 _Fig 1: BERT takes in sentences as inputs and gives sentence-level embeddings as the output_
+     _Fig 1: BERT takes in sentences as inputs and gives sentence-level embeddings as the output_
     
 
 4. Inference:
