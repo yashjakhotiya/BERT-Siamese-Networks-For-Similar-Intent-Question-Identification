@@ -63,6 +63,8 @@ or not they are similar.
     
     ![image](https://user-images.githubusercontent.com/39705529/141838152-b27025fc-becc-47b6-a20f-f6c7bb41e548.png)
     
+    _Fig 1: BERT takes in sentences as inputs and outputs sentence-level embeddings_
+    
 
 4. Inference:
     - For a query question 𝑄<sub>𝑞</sub> we identify the cluster 𝑐<sub>𝑖</sub> it belongs to.
