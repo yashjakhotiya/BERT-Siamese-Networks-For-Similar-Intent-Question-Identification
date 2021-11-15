@@ -61,6 +61,8 @@ or not they are similar.
     - The two embeddings are concatenated, and then passed to a feed-forward neural network which consists of a fully connected layer, a ReLu layer, another fully       connected layer, and finally a softmax layer in the order specified.
     - The softmax layer then outputs the probabilities of the pair of candidate questions being similar. Based on the probabilities we classify the questions as         similar or not similar.
     
+    ![image](https://user-images.githubusercontent.com/39705529/141838152-b27025fc-becc-47b6-a20f-f6c7bb41e548.png)
+    
 
 4. Inference:
     - For a query question 𝑄<sub>𝑞</sub> we identify the cluster 𝑐<sub>𝑖</sub> it belongs to.
@@ -148,7 +150,7 @@ We also tried adding a dropout layer to observe if any significant overfitting w
 
 **Future experiments:**    
     
-Experiment 3 was the final set of experiments done for the supervised part of our project for the midpoint report.
+Experiment 3 was the final set of experiments done for the supervised part of our project before the midpoint deadline.
 We also hope to gain insight by clustering similar questions and
 analyze the reason for their similarity, which may help in
 downstream tasks such as automatic question tagging, and
