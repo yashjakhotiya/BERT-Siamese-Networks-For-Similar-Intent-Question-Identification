@@ -134,11 +134,11 @@ Through the second set of experiments, we tried to gain insight on which model w
 
 | Data Preprocessing  | Data Augmentation  | Model | Train accuracy | Train F1 score | Test accuracy | Test F1 score |
 |---|---|---|---|---|---|---|
-| Yes  |  Yes |  Vanilla |  0.59  | 0.6  | 0.6  | 0.61  |
+| Yes  |  Yes |  Baseline |  0.59  | 0.6  | 0.6  | 0.61  |
 | Yes  | Yes  | Static BERT | 0.7  |0.63  | 0.68  | 0.61 |
 | Yes  | Yes  | Fine-tuned BERT| 0.99  |  0.98 |  0.71 |  0.62 |
 
-**Inference** : As it can be seen in the table, the Fine-tuned BERT model produces the best accuracy results on the data as compared to vanilla and Static-BERT. This again empirically backs our decision to choose a pre-trained BERT model and fine-tune it on our dataset. 
+**Inference** : As it can be seen in the table, the Fine-tuned BERT model produces the best accuracy results on the data as compared to the baseline and Static-BERT. This again empirically backs our decision to choose a pre-trained BERT model and fine-tune it on our dataset. 
 
 **Experiment 3 : Final model**
     
