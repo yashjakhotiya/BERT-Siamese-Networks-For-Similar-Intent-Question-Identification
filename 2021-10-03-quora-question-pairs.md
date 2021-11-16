@@ -26,9 +26,12 @@ The aim is to identify and flag questions with a high similarity index, and reta
 1. Dataset: The dataset that we will be using is the Quora Question Pairs dataset<sup>[1]</sup>. It consists of 404,290 pairs of questions. Each datapoint consists of a pairof questions and whether
 or not they are similar.
 
+2. Data Augmentation:
+    - We exploit the transitive property of similarity to generate new datapoints.
+       - If Question $Q_1$ is similar to Question $Q_2$ and Question $Q_2$ is similar to Question $Q_3$, then we can infer that $Q_1$ is similar to $Q_3$
+       - If Question $Q_1$ is similar to Question $Q_2$ and Question $Q_2$ is not similar to Question $Q_3$, then we can infer that $Q_1$ is not similar to $Q_3$
 
-2. Data preprocessing:
-    - One augmentation method we plan to leverage is the transitive property of similarity and create more question pairs. Assuming a question is represented as 𝑄<sub>𝑖</sub>. If 𝑄<sub>1</sub> - 𝑄<sub>2</sub> are similar and 𝑄<sub>2</sub> - 𝑄<sub>3</sub> are similar, then 𝑄<sub>1</sub> - 𝑄<sub>3</sub> will also be similar.
+3. Data preprocessing:
     - We used the following preprocessing techniques:
         -   Sample Sentence: "How can internet speed be increased by hacking through DNS?"
         1. Removing punctuation
@@ -48,7 +51,7 @@ or not they are similar.
             - Lemmatization is grouping together different inflected forms of a word so that they can be analyzed as a single item.
             - After Lemmatization: ['internet', 'speed', 'increase', 'hack', 'dns']
 
-3. Training:
+4. Training:
     - For each training iteration, we input questions in a pairwise fashion - 𝑄<sub>𝑖</sub>, 𝑄<sub>𝑗</sub>.
     - The model learns representations of building blocks of both sentences𝑄<sub>𝑖</sub>−>ν<sub>𝑖</sub>, 𝑄<sub>𝑗</sub>−>ν<sub>𝑗</sub>.
     - Next, these representations are concatenated 𝑣<sub>𝑐𝑜𝑛</sub> = 𝑐𝑜𝑛𝑐𝑎𝑡(ν<sub>𝑖</sub>, ν<sub>𝑗</sub>), and passed on to a feedforward neural network or a machine learning model 𝐹 (𝑣𝑐𝑜𝑛) that predicts whether two questions are similar or not.
@@ -66,14 +69,14 @@ or not they are similar.
      _Fig 1: BERT takes in sentences as inputs and gives sentence-level embeddings as the output_
     
 
-4. Inference:
+5. Inference:
     - For a query question 𝑄<sub>𝑞</sub> we identify the cluster 𝑐<sub>𝑖</sub> it belongs to.
     - For all candidate questions 𝑄<sub>𝑑</sub> belonging to cluster 𝑐<sub>𝑖</sub>, we find similarity 𝑠𝑖𝑚(𝑄<sub>𝑑</sub>, 𝑄<sub>𝑞</sub>). With clustering we avoid finding similarities with all questions in the question bank, making inference efficient.
     - If for any 𝑄<sub>𝑑</sub> ε 𝑐<sub>𝑖</sub>, if 𝑠𝑖𝑚(𝑄<sub>𝑑</sub>, 𝑄<sub>𝑞</sub>) > 𝑡ℎ𝑟𝑒𝑠ℎ𝑜𝑙𝑑, we flag that question as similar.
     - We also output 𝑡𝑜𝑝 − 𝑘 similar questions based on 𝑠𝑖𝑚(𝑄<sub>𝑑</sub>, 𝑄<sub>𝑞</sub>).
 
 
-5. Models in consideration:
+6. Models in consideration:
     - Potential models for learning representations
         - BERT-like models (RoBERTa, ALBERT, DeBERTa) 
         - GPT models
