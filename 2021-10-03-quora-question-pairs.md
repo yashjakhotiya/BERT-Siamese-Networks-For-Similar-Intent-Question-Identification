@@ -26,11 +26,17 @@ The aim is to identify and flag questions with a high similarity index, and reta
 1. Dataset: The dataset that we will be using is the Quora Question Pairs dataset<sup>[1]</sup>. It consists of 404,290 pairs of questions. Each datapoint consists of a pairof questions and whether
 or not they are similar.
 
+![WordCloud](https://user-images.githubusercontent.com/22400185/141877000-0663d2d9-2a99-4f59-b7ee-1cd367323457.png)
+![Histogram of character count](https://user-images.githubusercontent.com/22400185/141876903-478cd635-ae3a-45c8-a491-7f71b0c14011.jpeg)
+![Histogram of word count](https://user-images.githubusercontent.com/22400185/141876911-18ff1378-cb7a-411c-b82b-f13c571eddd2.jpeg)
+![Word share](https://user-images.githubusercontent.com/22400185/141876917-4d315806-63bb-4a46-a7a4-c55c6acff8ac.jpeg)
+
 2. Data Augmentation:
     - We exploit the transitive property of similarity to generate new datapoints.
-       - If Question $Q_1$ is similar to Question $Q_2$ and Question $Q_2$ is similar to Question $Q_3$, then we can infer that $Q_1$ is similar to $Q_3$
-       - If Question $Q_1$ is similar to Question $Q_2$ and Question $Q_2$ is not similar to Question $Q_3$, then we can infer that $Q_1$ is not similar to $Q_3$
-
+       - If Question Q<sub>1</sub> is similar to Question Q<sub>2</sub> and Question Q<sub>2</sub> is similar to Question Q<sub>3</sub>, then we can infer that Q<sub>1</sub> is similar to Q<sub>3</sub>
+       - If Question Q<sub>1</sub> is similar to Question Q<sub>2</sub> and Question Q<sub>2</sub> is not similar to Question Q<sub>3</sub>, then we can infer that Q<sub>1</sub> is not similar to Q<sub>3</sub>
+     
+     Through this method, we generated 25% more training datapoints.
 3. Data preprocessing:
     - We used the following preprocessing techniques:
         -   Sample Sentence: "How can internet speed be increased by hacking through DNS?"
@@ -100,7 +106,7 @@ relevant questions.
 
 # Midpoint results and analysis
 
-For this checkpoint, we completed the supervised aspect of our project and implemented a BERT-based model to classify pairs of questions as "similar" or "not similar". We conducted thorough experiments and ablation studies to find the optimal model, hyperparameters and data preprocessing techniques that gives us the best results. 
+For this checkpoint, we completed the supervised aspect of our project and implemented a BERT-based model to classify pairs of questions as "similar" or "not similar". We conducted thorough experiments and ablation studies to find the optimal model, hyperparameters and data preprocessing & augmentation techniques that gives us the best results.
  
 **Experiment 1 : Data preprocessing and augmentation choices**
     
