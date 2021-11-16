@@ -27,16 +27,17 @@ The aim is to identify and flag questions with a high similarity index, and reta
 or not they are similar.
 
 ![WordCloud](https://user-images.githubusercontent.com/22400185/141877000-0663d2d9-2a99-4f59-b7ee-1cd367323457.png)
-_ Fig 1: Word Cloud depictiing which words appear more frequently in the dataset _
+_Fig 1: Word Cloud depictiing which words appear more frequently in the dataset_
 
 ![Histogram of character count](https://user-images.githubusercontent.com/22400185/141876903-478cd635-ae3a-45c8-a491-7f71b0c14011.jpeg)
-_ Fig 2: Histogram representing the number of characters in each question _
+_Fig 2: Histogram representing the number of characters in each question_
 
 ![Histogram of word count](https://user-images.githubusercontent.com/22400185/141876911-18ff1378-cb7a-411c-b82b-f13c571eddd2.jpeg)
-_ Fig 3: Histogram representing the number of words in each question _
+_Fig 3: Histogram representing the number of words in each question_
 
 ![Word share](https://user-images.githubusercontent.com/22400185/141876917-4d315806-63bb-4a46-a7a4-c55c6acff8ac.jpeg)
-_ Fig 4: Plots representing the distribution of ratio of words shared between similar and dissimlar question _
+
+_Fig 4: Plots representing the distribution of ratio of words shared between similar and dissimlar question_
 
 2. Data Augmentation:
     - We exploit the transitive property of similarity to generate new datapoints.
