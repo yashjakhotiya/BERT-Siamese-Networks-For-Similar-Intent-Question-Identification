@@ -173,7 +173,7 @@ Experiment 3 was the final set of experiments done for the supervised part of ou
 We also hope to gain insight by clustering similar questions and
 analyze the reason for their similarity, which may help in
 downstream tasks such as automatic question tagging, and
-personalized recommendation of questions basedon the field of
+personalized recommendation of questions based on the field of
 interest. This will be the unsupervised portion of our project.
 
 # Proposed Timeline and Responsibilities :
