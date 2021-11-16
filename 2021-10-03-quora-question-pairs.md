@@ -27,7 +27,7 @@ The aim is to identify and flag questions with a high similarity index, and reta
 or not they are similar.
 
 ![WordCloud](https://user-images.githubusercontent.com/22400185/141877000-0663d2d9-2a99-4f59-b7ee-1cd367323457.png)
-_Fig 1: Word Cloud depictiing which words appear more frequently in the dataset_
+_Fig 1: Word Cloud depicting which words appear more frequently in the dataset_
 
 ![Histogram of character count](https://user-images.githubusercontent.com/22400185/141876903-478cd635-ae3a-45c8-a491-7f71b0c14011.jpeg)
 _Fig 2: Histogram representing the number of characters in each question_
