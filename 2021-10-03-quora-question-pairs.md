@@ -92,28 +92,18 @@ _Fig 4: Plots representing the distribution of ratio of words shared between sim
 
 
 6. Models in consideration:
-    - Potential models for learning representations
-        - BERT-like models (RoBERTa, ALBERT, DeBERTa) 
-        - GPT models
+    - Models for learning representations
+        - BERT
+        - GPT
         - XLNet
-    - Potential models for clustering
+    - Models for clustering
         - K-means
-        - DBSCAN
-        - GMM
-    - Potential models for finding similarity
+    - Models for finding similarity
         - Feedforward neural network (FFN)
-        - Gradient boosted trees
 
 ![](https://yashjakhotiya.github.io/blog//images/2021-10-03-quora-question-pairs/similar-questions-flow-chart.png "Model in action") 
 
-
-
-# Potential Results and Discussions:
-We aim to confidently identify a representative question for a
-query question input by a user, and further list the **_top-k_** most
-relevant questions.
-
-# Midpoint results and analysis
+# Final results and analysis
 
 For this checkpoint, we completed the supervised aspect of our project and implemented a BERT-based model to classify pairs of questions as "similar" or "not similar". We conducted thorough experiments and ablation studies to find the optimal model, hyperparameters and data preprocessing & augmentation techniques that gives us the best results.
  
@@ -197,19 +187,15 @@ This unsupervised learning pipeline is used to create a smaller question space f
     ![unnamed](https://user-images.githubusercontent.com/46374506/144765011-a35e1759-c413-47be-aa07-d9246e30c682.png)
 
     
-    
+# Conclusion
 
+In this project, we propose a method to classify questions as similar or not similar using a combination of a supervised method and unsupervised method. For the unsupervised method, we use K-means clustering to group the questions in the dataset based on their sentence level embeddings, in order to narrow down the question space from which the reference questions are picked for comparison. The unsupervised pipeline gives us the top K similar questions for each of the clusters. Through this, we were able to form 100 clusters which reduces our overhead significantly. 
 
-    
-    
+For the supervised method, we implement transformer based models such as BERT, GPT-2, and XLNet to classify the test question as similar or not. After extensive results and ablations we were able to finalize our model as the pre-trained BERT model which is fine-tuned on our data. This supervised model classifies the given query question as similar or not after comparison with the top K reference questions obtained from the unsupervised pipeline based on their sentence embeddings. We achieve a test accuracy of 76% for this task.
+   
 **Future experiments:**    
     
-Experiment 3 was the final set of experiments done for the supervised part of our project before the midpoint deadline.
-We also hope to gain insight by clustering similar questions and
-analyze the reason for their similarity, which may help in
-downstream tasks such as automatic question tagging, and
-personalized recommendation of questions based on the field of
-interest. This will be the unsupervised portion of our project.   
+Future work may include downstream tasks such as automatic question tagging, and personalized recommendation of questions based on the field of interest. This can be very advantageous for forums such as Ed, Quora, Piazza, etc. and can help towards making the work of teaching staff easier.
     
 # Proposed Timeline and Responsibilities :
 ![](https://yashjakhotiya.github.io/blog/images/2021-10-03-quora-question-pairs/timeline.png "Timeline") 
