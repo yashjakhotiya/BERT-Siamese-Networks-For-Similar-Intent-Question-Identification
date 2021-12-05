@@ -170,7 +170,7 @@ We also tried adding a dropout layer to observe if any significant overfitting w
     
 **Experiment 4 : Model ablation study**
 
-Based on the previous experiments, we finalized the hyperparameters and type of data that would give us optimal results. After this, we decided to try different models with the same hyperparameters and data as mentioned in our initial project proposal. We chose 2 models apart from our BERT model - GPT-2 and XLNet. We used the distilGPT-2, which is a smaller version of GPT-2, consisting of 6 layers, 768 dimension and 12 heads, totalizing 82M parameters. For XLNet we used the XLNet-Tiny which is smaller version of the actual XLNet. These models were run with a batch size of 64 over 5 training epochs based on the availability of our compute resources. For this experiment, we used our entire dataset consisting of 500,000 data points. The results for this experiment are shown below:
+Based on the previous experiments, we finalized the hyperparameters and type of data that would give us optimal results. After this, we decided to try 3 different models as mentioned in our initial project proposal. We used the same hyperparameters and type of data for the experiment. We chose 2 models apart from our BERT model : GPT-2 and XLNet. We used the distilGPT-2, which is a smaller version of GPT-2, consisting of 6 layers, 768 dimension and 12 heads, totalizing 82M parameters. For XLNet we used the XLNet-Tiny which is smaller version of the actual XLNet. These models were all trained with a batch size of 64 over 5 epochs based on the availability of our compute resources. For this experiment, we used our entire dataset consisting of approximately 500,000 data points. The results for this experiment are shown below:
 
 | Model  | Train accuracy  | Train F1 score  | Test accuracy  | Test F1 score  |
 |---|---|---|---|---|
@@ -178,7 +178,7 @@ Based on the previous experiments, we finalized the hyperparameters and type of 
 | GPT-2  |   |   |   |   |
 | XLNet  |   |   |   |   |
     
-**Inference** : As it can be seen in the table, the Fine-tuned BERT model produces the best accuracy results on the data as compared to the GPT-2 and XLNet models. Thus, we present the Fine-tuned BERT model as our final supervised learning model with a test accuracy of 76%.  
+**Inference** : As it can be seen in the table, the Fine-tuned BERT model produces the best accuracy results on the test data as compared to the GPT-2 and XLNet models. Thus, we present the Fine-tuned BERT model as our final supervised learning model with a test accuracy of 76%.  
 
 **Future experiments:**    
     
