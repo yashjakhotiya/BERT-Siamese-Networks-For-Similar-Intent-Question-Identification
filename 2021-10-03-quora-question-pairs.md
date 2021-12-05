@@ -168,14 +168,18 @@ Once we chose the model as the Fine-tuned BERT model based on the results from e
 
 We also tried adding a dropout layer to observe if any significant overfitting was occurring. However, this did not result in any change in the results. Thus, we can conclude that our model does not overfit. 
 
-**Future experiments:**    
-    
-Experiment 3 was the final set of experiments done for the supervised part of our project before the midpoint deadline.
-We also hope to gain insight by clustering similar questions and
-analyze the reason for their similarity, which may help in
-downstream tasks such as automatic question tagging, and
-personalized recommendation of questions based on the field of
-interest. This will be the unsupervised portion of our project.
+
+**Experiment 4 : Model ablation study**
+
+Based on the previous experiments, we finalized the hyperparameters and type of data that would give us optimal results. After this, we decided to try 3 different models as mentioned in our initial project proposal. We chose 2 models apart from our BERT model : GPT-2 and XLNet. We used the distilGPT-2, which is a smaller version of GPT-2, consisting of 6 layers, 768 dimension and 12 heads, totalizing 82M parameters. For XLNet we used the XLNet-Tiny which is smaller version of the actual XLNet. These models were all trained with a batch size of 64 over 5 epochs based on the availability of our compute resources. For this experiment, we used our entire dataset consisting of approximately 500,000 data points. The results for this experiment are shown below:
+
+| Model  | Train accuracy  | Train F1 score  | Test accuracy  | Test F1 score  |
+|---|---|---|---|---|
+| Fine-tuned BERT  | 0.97  | 0.96  | 0.76 | 0.69  |
+| GPT-2  |   |   |   |   |
+| XLNet  |   |   |   |   |
+
+**Inference** : As it can be seen in the table, the Fine-tuned BERT model produces the best accuracy results on the test data as compared to the GPT-2 and XLNet models. Thus, we present the Fine-tuned BERT model as our final supervised learning model with a test accuracy of 76%.
 
 ### Unsupervised Learning Pipeline
     
@@ -196,7 +200,14 @@ This unsupervised learning pipeline is used to create a smaller question space f
 
     
     
+**Future experiments:**    
     
+Experiment 3 was the final set of experiments done for the supervised part of our project before the midpoint deadline.
+We also hope to gain insight by clustering similar questions and
+analyze the reason for their similarity, which may help in
+downstream tasks such as automatic question tagging, and
+personalized recommendation of questions based on the field of
+interest. This will be the unsupervised portion of our project.   
     
 # Proposed Timeline and Responsibilities :
 ![](https://yashjakhotiya.github.io/blog/images/2021-10-03-quora-question-pairs/timeline.png "Timeline") 
