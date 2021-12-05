@@ -115,6 +115,8 @@ relevant questions.
 
 # Midpoint results and analysis
 
+### Supervised Learning Pipeline
+
 For this checkpoint, we completed the supervised aspect of our project and implemented a BERT-based model to classify pairs of questions as "similar" or "not similar". We conducted thorough experiments and ablation studies to find the optimal model, hyperparameters and data preprocessing & augmentation techniques that gives us the best results.
  
 **Experiment 1 : Data preprocessing and augmentation choices**
