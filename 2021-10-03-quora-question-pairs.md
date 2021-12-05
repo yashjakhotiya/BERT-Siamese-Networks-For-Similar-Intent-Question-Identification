@@ -105,7 +105,7 @@ _Fig 4: Plots representing the distribution of ratio of words shared between sim
 
 # Final results and analysis
 
-### Unsupervised Learning Pipeline
+### Supervised Learning Pipeline
  
 **Experiment 1 : Data preprocessing and augmentation choices**
     
