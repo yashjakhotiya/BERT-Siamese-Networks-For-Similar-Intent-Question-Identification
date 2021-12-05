@@ -193,7 +193,7 @@ In this project, we propose a method to classify questions as similar or not sim
 
 For the supervised method, we implement a combination of transformer based models (such as BERT, GPT-2, and XLNet) and a feed forward neural network to classify the test question as similar or not. After extensive results and ablations we were able to finalize our model as the pre-trained BERT model which is fine-tuned on our data. This supervised model classifies the given query question as similar or not after comparison with the top K reference questions obtained from the unsupervised pipeline based on their sentence embeddings. We achieve a test accuracy of 76% for this task.
    
-**Future experiments:**    
+# Future experiments:**    
     
 Future work may include downstream tasks such as automatic question tagging, and personalized recommendation of questions based on the field of interest. This can be very advantageous for forums such as Ed, Quora, Piazza, etc. and can help towards making the work of teaching staff easier.
     
