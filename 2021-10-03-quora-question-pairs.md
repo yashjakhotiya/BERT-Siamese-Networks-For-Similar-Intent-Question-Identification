@@ -167,18 +167,6 @@ Once we chose the model as the Fine-tuned BERT model based on the results from e
 | Yes  |  Yes |  Fine-tuned BERT |  0.97  | 0.96  | 0.76  | 0.69  |
 
 We also tried adding a dropout layer to observe if any significant overfitting was occurring. However, this did not result in any change in the results. Thus, we can conclude that our model does not overfit. 
-    
-**Experiment 4 : Model ablation study**
-
-Based on the previous experiments, we finalized the hyperparameters and type of data that would give us optimal results. After this, we decided to try 3 different models as mentioned in our initial project proposal. We chose 2 models apart from our BERT model : GPT-2 and XLNet. We used the distilGPT-2, which is a smaller version of GPT-2, consisting of 6 layers, 768 dimension and 12 heads, totalizing 82M parameters. For XLNet we used the XLNet-Tiny which is smaller version of the actual XLNet. These models were all trained with a batch size of 64 over 5 epochs based on the availability of our compute resources. For this experiment, we used our entire dataset consisting of approximately 500,000 data points. The results for this experiment are shown below:
-
-| Model  | Train accuracy  | Train F1 score  | Test accuracy  | Test F1 score  |
-|---|---|---|---|---|
-| Fine-tuned BERT  | 0.97  | 0.96  | 0.76 | 0.69  |
-| GPT-2  |   |   |   |   |
-| XLNet  |   |   |   |   |
-    
-**Inference** : As it can be seen in the table, the Fine-tuned BERT model produces the best accuracy results on the test data as compared to the GPT-2 and XLNet models. Thus, we present the Fine-tuned BERT model as our final supervised learning model with a test accuracy of 76%.  
 
 **Future experiments:**    
     
@@ -189,6 +177,23 @@ downstream tasks such as automatic question tagging, and
 personalized recommendation of questions based on the field of
 interest. This will be the unsupervised portion of our project.
 
+### Unsupervised Learning Pipeline
+    
+We build an unsupervised learning pipeline in order to cluster similar questions. The pipeline consists of 3 steps : 
+1. The first part of the pipeline consists of creating BERT embeddings of all the questions after preprocessing them.
+2. We then perform Principal Component Analysis (PCA) in order to reduce the dimensionality of our dataset. From the below graph, we can infer that with just 15 components, 99 percent of the variance is retained.
+![image](https://user-images.githubusercontent.com/46374506/144763989-c6abfce0-3003-4b3d-9921-d9aad90937f5.png)
+3. We cluster the preprocessed dataset using Kmeans clustering algorithm. The elbow method plotted below, is used to find out the ideal number of clusters after analysing the tradeoff between performance and computation cost. From the graph, we can infer that the elbow is at 100 clusters
+![image](https://user-images.githubusercontent.com/46374506/144764219-06373665-f8cb-429a-a9e6-fced14b99b33.png)
+
+This unsupervised learning pipeline is used to create a smaller question space from which we can choose the top K similar questions. This in turn reduces the time overhead by 100 times. Here is an example illustrating potential canonical questions for a given question : 
+![image](https://user-images.githubusercontent.com/46374506/144764579-f24180bf-647a-4bd3-a616-2285913e5a56.png)
+
+
+    
+    
+    
+    
 # Proposed Timeline and Responsibilities :
 ![](https://yashjakhotiya.github.io/blog/images/2021-10-03-quora-question-pairs/timeline.png "Timeline") 
 
