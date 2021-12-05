@@ -105,7 +105,7 @@ _Fig 4: Plots representing the distribution of ratio of words shared between sim
 
 # Final results and analysis
 
-For this checkpoint, we completed the supervised aspect of our project and implemented a BERT-based model to classify pairs of questions as "similar" or "not similar". We conducted thorough experiments and ablation studies to find the optimal model, hyperparameters and data preprocessing & augmentation techniques that gives us the best results.
+### Unsupervised Learning Pipeline
  
 **Experiment 1 : Data preprocessing and augmentation choices**
     
