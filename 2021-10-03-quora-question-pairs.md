@@ -194,8 +194,10 @@ We build an unsupervised learning pipeline in order to cluster similar questions
     ![image](https://user-images.githubusercontent.com/46374506/144764219-06373665-f8cb-429a-a9e6-fced14b99b33.png)
 
 This unsupervised learning pipeline is used to create a smaller question space from which we can choose the top K similar questions. This in turn reduces the time overhead by 100 times. Here is an example illustrating potential canonical questions for a given question : 
+    ![unnamed](https://user-images.githubusercontent.com/46374506/144765011-a35e1759-c413-47be-aa07-d9246e30c682.png)
+
     
-    ![image](https://user-images.githubusercontent.com/46374506/144764661-85b719da-4668-4d32-84b1-888f1a9d33c3.png)
+    
 
 
     
