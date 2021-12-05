@@ -115,8 +115,6 @@ relevant questions.
 
 # Midpoint results and analysis
 
-### Supervised Learning Pipeline
-
 For this checkpoint, we completed the supervised aspect of our project and implemented a BERT-based model to classify pairs of questions as "similar" or "not similar". We conducted thorough experiments and ablation studies to find the optimal model, hyperparameters and data preprocessing & augmentation techniques that gives us the best results.
  
 **Experiment 1 : Data preprocessing and augmentation choices**
@@ -184,12 +182,16 @@ interest. This will be the unsupervised portion of our project.
 We build an unsupervised learning pipeline in order to cluster similar questions. The pipeline consists of 3 steps : 
 1. The first part of the pipeline consists of creating BERT embeddings of all the questions after preprocessing them.
 2. We then perform Principal Component Analysis (PCA) in order to reduce the dimensionality of our dataset. From the below graph, we can infer that with just 15 components, 99 percent of the variance is retained.
-![image](https://user-images.githubusercontent.com/46374506/144763989-c6abfce0-3003-4b3d-9921-d9aad90937f5.png)
+    
+    ![image](https://user-images.githubusercontent.com/46374506/144763989-c6abfce0-3003-4b3d-9921-d9aad90937f5.png)
+
 3. We cluster the preprocessed dataset using Kmeans clustering algorithm. The elbow method plotted below, is used to find out the ideal number of clusters after analysing the tradeoff between performance and computation cost. From the graph, we can infer that the elbow is at 100 clusters
-![image](https://user-images.githubusercontent.com/46374506/144764219-06373665-f8cb-429a-a9e6-fced14b99b33.png)
+    
+    ![image](https://user-images.githubusercontent.com/46374506/144764219-06373665-f8cb-429a-a9e6-fced14b99b33.png)
 
 This unsupervised learning pipeline is used to create a smaller question space from which we can choose the top K similar questions. This in turn reduces the time overhead by 100 times. Here is an example illustrating potential canonical questions for a given question : 
-![image](https://user-images.githubusercontent.com/46374506/144764579-f24180bf-647a-4bd3-a616-2285913e5a56.png)
+
+    ![image](https://user-images.githubusercontent.com/46374506/144764579-f24180bf-647a-4bd3-a616-2285913e5a56.png)
 
 
     
