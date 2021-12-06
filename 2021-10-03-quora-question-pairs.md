@@ -150,12 +150,12 @@ Through the second set of experiments, we tried to gain insight on which model w
 
 **Experiment 3 : Model Selection Ablation**
     
-Once we chose to fine-tune our models based on the results from experiment 2. Next, we did some hyperparamter tuning to pick the best combination of hyperparameters for performance. We found that a batch size of 128 and a training over 5 epochs gave the best test results for our Fine-tuned BERT model. We then trained all 400,000 question pairs with this hyperparameter setting. We repeated the same process with GPT and XLNet architectures. The results for this experiment are shown below:
+We chose to fine-tune our models based on the results from experiment 2. Next, we did some hyperparamter tuning to pick the best combination of hyperparameters for performance. We found that a batch size of 128 and a training over 5 epochs gave the best test results for our Fine-tuned BERT model. We then trained all 400,000 question pairs with this hyperparameter setting. We repeated the same process with GPT and XLNet architectures. The results for this experiment are shown below:
 
 | Model | Train accuracy | Test accuracy |
 |---|---|---|
 | Fine-tuned BERT |  0.94  | 0.86  |
-| Fine-tuned GPT  |  0.65  | 0.63  |
+| Fine-tuned GPT-2|  0.65  | 0.63  |
 | Fine-tuned XLNet|  0.64  | 0.64  |
 
 **Inference** : As it can be seen in the table, the Fine-tuned BERT model produces the best accuracy results on the test data as compared to the GPT-2 and XLNet models. Thus, we present the Fine-tuned BERT model as our final supervised learning model with a test accuracy of 86%.
@@ -179,10 +179,12 @@ This unsupervised learning pipeline is used to create a smaller question space f
     
 # Conclusion
 
-In this project, we propose a method to classify questions as similar or not similar using a combination of a supervised method and unsupervised method. For the unsupervised method, we use K-means clustering to group the questions in the dataset based on their sentence level embeddings, in order to narrow down the question space from which the reference questions are picked for comparison. The unsupervised pipeline gives us the candidate similar questions for each of the clusters. Through this, we were able to form 100 clusters which reduces our overhead significantly. 
+In this project, we propose a method to classify questions as similar or not similar using a combination of a supervised method and unsupervised method.  
 
-For the supervised method, we implement a combination of transformer based models (such as BERT, GPT-2, and XLNet) and a feed forward neural network to classify the test question as similar or not. After extensive results and ablations we were able to finalize our model as the pre-trained BERT model which is fine-tuned on our data. This supervised model classifies the given query question as similar or not after comparison with the top K reference questions obtained from the unsupervised pipeline based on their sentence embeddings. We achieve a test accuracy of 76% for this task.
-   
+For the supervised method, we implemented multiple transformer based models (such as BERT, GPT-2, and XLNet) as backbones over a feed forward neural network to classify whether two questions are similar or not. After extensive results and ablations we were able to finalize our model as the pre-trained BERT model which is fine-tuned on our data. This supervised model classifies the given query question as similar or not after comparison with the top K reference questions obtained from the unsupervised pipeline based on their sentence embeddings. We achieve a test accuracy of 86% for this task.
+
+For the unsupervised method, we use K-means clustering to group the questions in the dataset based on their sentence level embeddings, in order to narrow down the question space from which the reference questions are picked for comparison. The unsupervised pipeline gives us the candidate similar questions for each of the clusters. Through this, we were able to form 100 clusters which reduces our overhead significantly.
+
 # Future experiments:   
     
 Future work may include downstream tasks such as automatic question tagging, and personalized recommendation of questions based on the field of interest. This can be very advantageous for forums such as Ed, Quora, Piazza, etc. and can help towards making the work of teaching staff easier.
