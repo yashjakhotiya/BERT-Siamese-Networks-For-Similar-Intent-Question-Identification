@@ -148,7 +148,7 @@ Through the second set of experiments, we tried to gain insight on which model w
 
 **Inference** : As it can be seen in the table, the Fine-tuned BERT model produces the best accuracy results on the data as compared to the baseline and Static-BERT. This again empirically backs our decision to choose a pre-trained BERT model and fine-tune it on our dataset. 
 
-**Experiment 3 : Final Model Ablation**
+**Experiment 3 : Model Selection Ablation**
     
 Once we chose to fine-tune our models based on the results from experiment 2. Next, we did some hyperparamter tuning to pick the best combination of hyperparameters for performance. We found that a batch size of 128 and a training over 5 epochs gave the best test results for our Fine-tuned BERT model. We then trained all 400,000 question pairs with this hyperparameter setting. We repeated the same process with GPT and XLNet architectures. The results for this experiment are shown below:
 
