@@ -1,6 +1,6 @@
 # BERT-Siamese-Networks-For-Similar-Intent-Question-Identification
 
-The following details are also available in this [blog post](yashjakhotiya.github.io/blog/nlp/2021/10/03/quora-question-pairs.html)!
+The following details are also available in this [blog post](https://yashjakhotiya.github.io/blog/nlp/2021/10/03/quora-question-pairs.html)!
 
 _Course project for [CS 7641](https://mahdi-roozbahani.github.io/CS46417641-fall2021/)_
 
